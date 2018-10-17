@@ -16,6 +16,7 @@ public class UDP_Server {
 		DatagramSocket socket = null;
 		try {
 			socket = new DatagramSocket(port);
+			socket.setBroadcast(true);
 		} catch (SocketException e1) {
 			e1.printStackTrace();
 			return;
@@ -24,7 +25,6 @@ public class UDP_Server {
 		
 		while(true) {
 		try {
-			
 				// Receive datagram packet 
 				DatagramPacket dp = new DatagramPacket(new byte[buffSize], buffSize);
 				socket.receive(dp);

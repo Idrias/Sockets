@@ -38,6 +38,7 @@ public class UDP_Client {
 			byte[] bytes = input.getBytes();
 			try {
 				System.out.println(bytes + " " + bytes.length);
+				socket.setBroadcast(true);
 				socket.send(new DatagramPacket(bytes, bytes.length, new InetSocketAddress("255.255.255.255", port)));
 			} catch (IOException e) {
 				e.printStackTrace();
