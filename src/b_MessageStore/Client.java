@@ -23,7 +23,7 @@ public class Client {
 
 				// Write command
 				PrintWriter out = new PrintWriter(socket.getOutputStream());
-				out.write(input + "\n");
+				out.println(input);
 				out.flush();
 
 				// Read message
