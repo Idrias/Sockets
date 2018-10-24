@@ -17,20 +17,25 @@ public class FileWriteClass extends Thread {
 	private String content;
 	DatagramSocket socket;
 	InetSocketAddress client;
+	FileMonitor monitor;
 	
 	
-	public FileWriteClass(String name, String path, int line, String content, DatagramSocket socket, InetSocketAddress client) {
+	public FileWriteClass(String name, String path, int line, String content, DatagramSocket socket, InetSocketAddress client, FileMonitor monitor) {
 		this.name = name;
 		this.path = path;
 		this.line = line;
 		this.content = content;
 		this.socket = socket;
 		this.client = client;
+		this.monitor = monitor;
 	}
 	
 	@Override
 	public void start() {
+		monitor.startWrite();
 		String returnLine = writeLine(name, content, line);
+		monitor.endWrite();
+		
 		FileServer.sendMessage(socket, client, returnLine);
 	}
 	

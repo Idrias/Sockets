@@ -6,12 +6,14 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 public class FileServer {
 
 	private static final int PORT = 5999;
 	private static final int PACKET_SIZE = (int) Math.pow(2, 16) - 29;
 	private static final String PATH = "files";
+	private static ArrayList<FileMonitor> monitors = new ArrayList<>();
 
 	public static void main(String[] args) {
 
@@ -70,7 +72,7 @@ public class FileServer {
 			// Process command
 			switch (command) {
 				case "READ":
-					new FileReadClass(fileName, PATH, line, ds, clientAddress).start();
+					new FileReadClass(fileName, PATH, line, ds, clientAddress, getMonitor(fileName)).start();
 					break;
 
 				case "WRITE":
@@ -79,7 +81,8 @@ public class FileServer {
 					for(int i=2; i<messageParts.length; i++) contents += messageParts[i] + " ";
 					
 					// Write to disk
-					new FileWriteClass(fileName, PATH, line, contents, ds, clientAddress).start();
+
+					new FileWriteClass(fileName, PATH, line, contents, ds, clientAddress, getMonitor(fileName)).start();
 					break;
 
 				default:
@@ -89,6 +92,20 @@ public class FileServer {
 			}
 		}
 	}
+	
+	
+	public static FileMonitor getMonitor(String fileName) {
+		FileMonitor monitor = null;
+		for(FileMonitor m : monitors) {
+			if(m.getName().equals(fileName)) monitor = m;
+		}
+		if(monitor == null) {
+			monitor = new FileMonitor(fileName);
+			monitors.add(monitor);
+		}
+		return monitor;
+	}
+	
 	
 	public static void sendMessage(DatagramSocket ds, InetSocketAddress receiver, String content) {
 

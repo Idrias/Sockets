@@ -14,18 +14,23 @@ public class FileReadClass extends Thread {
 	private DatagramSocket socket;
 	private InetSocketAddress client;
 	private String path;
+	private FileMonitor monitor;
 	
-	public FileReadClass(String name, String path,  int line, DatagramSocket socket, InetSocketAddress client) {
+	public FileReadClass(String name, String path,  int line, DatagramSocket socket, InetSocketAddress client, FileMonitor monitor) {
 		this.name = name;
 		this.path = path;
 		this.line = line;
 		this.socket = socket;
 		this.client = client;
+		this.monitor = monitor;
 	}
 	
 	@Override
 	public void run() {
+		monitor.startRead();
 		String returnString = readLine(name, line);
+		monitor.endRead();
+		
 		FileServer.sendMessage(socket, client, returnString);
 	}
 	
