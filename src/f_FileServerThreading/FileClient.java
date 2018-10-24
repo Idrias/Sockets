@@ -21,6 +21,7 @@ public class FileClient {
 		try {
 			ds = new DatagramSocket();
 			System.out.println("File Client started on port " + ds.getLocalPort());
+			System.out.println("Command syntax: <Command> <Textfile>,<Line> [<Content>]" );
 		} catch (SocketException e) {
 			e.printStackTrace();
 			return;
