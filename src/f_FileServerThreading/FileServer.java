@@ -81,7 +81,6 @@ public class FileServer {
 					for(int i=2; i<messageParts.length; i++) contents += messageParts[i] + " ";
 					
 					// Write to disk
-
 					new FileWriteClass(fileName, PATH, line, contents, ds, clientAddress, getMonitor(fileName)).start();
 					break;
 
@@ -95,6 +94,10 @@ public class FileServer {
 	
 	
 	public static FileMonitor getMonitor(String fileName) {
+		
+		// Find monitor for requested file
+		// If no monitor found: create new one
+		
 		FileMonitor monitor = null;
 		for(FileMonitor m : monitors) {
 			if(m.getName().equals(fileName)) monitor = m;
