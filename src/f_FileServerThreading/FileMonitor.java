@@ -22,7 +22,7 @@ public class FileMonitor {
 	}
 	
 	public synchronized void startWrite() {
-		// Wait as long a writer or any reader is active
+		// Wait as long as a writer or any reader is active
 		while(writerActive || readingCtr > 0) {
 			try {
 				this.wait();
